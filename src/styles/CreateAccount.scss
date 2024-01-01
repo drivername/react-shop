@@ -1,0 +1,14 @@
+form{
+    
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    input{
+        width:50%;
+    }
+    button{
+        width:30%;
+        height:40px;
+    }
+}
