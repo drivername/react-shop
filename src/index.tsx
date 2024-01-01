@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 import Root from './routs/Root';
 import CreateAccount from './routs/CreateAccount';
-import { store } from './redux/store';
+
 import { Provider } from 'react-redux'
-import Login from './routs/Logi';
+import Login from './routs/Login';
 import UserPanel from './routs/UserPanel';
 
 
@@ -39,11 +39,11 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Provider store={store}>
+
   <React.StrictMode>
        <RouterProvider router={router} />
   </React.StrictMode>
-  </Provider>
+ 
 );
 
 

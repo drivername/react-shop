@@ -1,12 +1,23 @@
-import React from 'react'
-import { useAppSelector } from '../redux/hook'
+import axios from 'axios'
+import React, { useEffect } from 'react'
 
+const  fetchUserData=async()=>{
+    const userData=await axios.get('http://localhost:3001/user/panel',{
+        withCredentials:true
+    })
+    const response=userData.data
+   console.log(userData)
+
+}
 export default function UserPanel() {
-    const userData=useAppSelector((state)=>state.isLogin.jwtExpire)
+    
+ useEffect(()=>{
+    fetchUserData()
+ })
   return (
    <>
     <h1>Welcome on User Panel</h1>
-    <h4>{userData}</h4>
+   
    </>
   )
 }

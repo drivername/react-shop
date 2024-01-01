@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../styles/CreateAccount.scss'
@@ -6,10 +6,8 @@ import TextInput from '../Forms/TextInput';
 import EmailInput from '../Forms/EmailInput';
 import PasswordInput from '../Forms/PasswordInput';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../redux/hook';
-import { saveUserData } from '../redux/slices/UserSlice';
-import { changeLoginStatus, setExpireJwtTokenTime } from '../redux/slices/isLogin';
+import { redirect, useNavigate } from 'react-router-dom';
+
 
 interface CreatedUser{
     accountCreated:boolean
@@ -20,28 +18,37 @@ interface CreatedUser{
 
 
 
-  const handlePost=async(values:any,dispatch:any)=>{
+  const handlePost=async(values:any,navigate:any,emailConstraint:any)=>{
 
     try{
         const response=await axios.post('http://localhost:3001/auth/signup',values,{
             withCredentials:true
         })
-        const response2:CreatedUser=response.data
-     
-        if(response2.accountCreated===true){
-            console.log(response2)
-            const expireTime=response2.jwtExp
-            dispatch(setExpireJwtTokenTime(expireTime))
-        
+        const response2=response.data
+        console.log(response,"co to takiego?")
+        if(response2.accountCreated==true){
+            navigate('/',{state:{message:"Your account was created, now you can sign in"}})
         }
-    }catch(e){
-        console.log(e)
+     
+    }catch(e:any){
+        console.log(e,"gdzie to mam miejsce")
+        if(e.response.status==409){
+            console.log('wykonalo sie?')
+            emailConstraint.current!.value=''
+            emailConstraint.current!.placeholder='Accpunt with this email exist'
+            emailConstraint.current!.style.backgroundColor="red"
+            setTimeout(()=>{
+                emailConstraint.current!.style.backgroundColor="white"
+                emailConstraint.current!.placeholder='Write another email'
+            },2000)
+            
+        }
     }
  } 
 
 export default function CreateAccount() {
    const navigate=useNavigate()
-   const dispatch=useAppDispatch() 
+    const emailConstraint=useRef<HTMLInputElement|null>(null)
    
       return (
         <Formik
@@ -57,8 +64,9 @@ export default function CreateAccount() {
         })}
         onSubmit={(values, { setSubmitting }) => {
             
-            handlePost(values,dispatch)
-            navigate('/')
+           handlePost(values,navigate,emailConstraint)
+      
+            
            
         
         }}
@@ -81,6 +89,8 @@ export default function CreateAccount() {
              name='email'
              type='email'
              placeholder='write your email'
+             ref={emailConstraint}
+            
              />
              <PasswordInput
              label="Password"
