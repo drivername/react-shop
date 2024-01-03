@@ -1,9 +1,11 @@
-import { Form, Formik, replace } from 'formik'
-import React from 'react'
+import { Form, Formik, replace, useFormik } from 'formik'
+import React, { useState } from 'react'
 import TextInput from '../Forms/TextInput'
 import PasswordInput from '../Forms/PasswordInput'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../redux/app.hook'
+import { setLoginStatus } from '../redux/slices/isLogin.slice'
 
 
 interface loginData{
@@ -11,19 +13,36 @@ interface loginData{
   password:string
 }
 
-const loginUser=async(values:loginData,navigate:any)=>{
-  const login=await axios.post("http://localhost:3001/auth/signin",values,{
-    withCredentials:true
-  })
-  const response=login.status
-  if(response==201){
-    navigate('/user')
+const loginUser=async(values:loginData,navigate:any,setMsg:any,actions:any,dispatch:any)=>{
+
+  try{
+    const login=await axios.post("http://localhost:3001/auth/signin",values,{
+      withCredentials:true
+    })
+  
+    if(login.status==200){
+      dispatch(setLoginStatus(true))
+      navigate('/user')
+    }
+
+  }catch(e:any){
+    if(e.response.status==401){
+      actions.resetForm()
+      setMsg(true)
+      console.log('PASSWORD INCCORECT')
+
+    }
   }
+ 
+ 
 }
 
 
 export default function Login() {
+  const dispatch=useAppDispatch()
+  const [msg,setMsg]=useState()
   const navigate=useNavigate()
+
   return (
     <div>
       <Formik
@@ -31,9 +50,10 @@ export default function Login() {
         email:'',
         password:''
       }}
-      onSubmit={(values)=>{
-        loginUser(values,navigate)
+      onSubmit={(values,actions)=>{
+        loginUser(values,navigate,setMsg,actions,dispatch)
       }}
+    
       >
         <Form>
         <TextInput
@@ -50,6 +70,8 @@ export default function Login() {
 <button type='submit'>Login</button>
         </Form>
       </Formik>
+
+    <h4>{msg?"Pleas provide correct credentials":null}</h4>
     </div>
   )
 }

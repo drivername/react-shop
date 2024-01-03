@@ -1,19 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import '../styles/Root.scss'
 import Nav from '../components/Nav'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLoaderData, useLocation } from 'react-router-dom'
 import axios from 'axios'
+import { useAppDispatch, useAppSelector } from '../redux/app.hook'
+import { setLoginStatus } from '../redux/slices/isLogin.slice'
+import { setUserData } from '../redux/slices/userData.slice'
 
 function Root(props:any) {
 const loc=useLocation()
-  useEffect(()=>{
-    console.log(loc.state)
-  
-   
-  })
+const data:any=useLoaderData()
+const loginStatus=useAppSelector((state)=>state.isLogin.value)
+const dispatch=useAppDispatch()
+
+console.log("ROOT")
+
+useEffect(()=>{
+ if(data!=null){
+  dispatch(setLoginStatus({boolean:true,from:'Root'}))
+ }
+})
   return (
-    <>
+    <div className='mainContainer'> 
     <nav className='nav'>
     <Nav></Nav>
     </nav>
@@ -23,7 +32,7 @@ const loc=useLocation()
  
     </main>
     <footer></footer>
-    </>
+    </div>
   )
 }
 
