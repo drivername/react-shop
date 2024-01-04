@@ -1,7 +1,9 @@
 import axios from "axios";
 
 export default async function mainUserData(){
+    console.log('WYKONUJE SIE!')
     try{
+       
         const userData=await axios.get('http://localhost:3001/user/panel',{
             withCredentials:true
         })
@@ -10,6 +12,7 @@ export default async function mainUserData(){
        return response
 
     }catch(e:any){
+        console.log('WYKONUJE SIE!')
         //if token expired
         if(e.response.status==403){
            

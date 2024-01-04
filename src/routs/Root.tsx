@@ -4,30 +4,24 @@ import '../styles/Root.scss'
 import Nav from '../components/Nav'
 import { Outlet, useLoaderData, useLocation } from 'react-router-dom'
 import axios from 'axios'
-import { useAppDispatch, useAppSelector } from '../redux/app.hook'
-import { setLoginStatus } from '../redux/slices/isLogin.slice'
-import { setUserData } from '../redux/slices/userData.slice'
 
-function Root(props:any) {
-const loc=useLocation()
+
+function Root() {
+
 const data:any=useLoaderData()
-const loginStatus=useAppSelector((state)=>state.isLogin.value)
-const dispatch=useAppDispatch()
+let isLoged=false
 
-console.log("ROOT")
+console.log(data,'data')
+if(data!==null){
+isLoged=true
+}
 
-useEffect(()=>{
- if(data!=null){
-  dispatch(setLoginStatus({boolean:true,from:'Root'}))
- }
-})
   return (
     <div className='mainContainer'> 
     <nav className='nav'>
-    <Nav></Nav>
+    <Nav isLoged={isLoged}></Nav>
     </nav>
     <main className='main'>
-      <h1>{loc.state?loc.state.message:null}</h1>
  <Outlet/>
  
     </main>

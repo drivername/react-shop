@@ -4,8 +4,7 @@ import TextInput from '../Forms/TextInput'
 import PasswordInput from '../Forms/PasswordInput'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../redux/app.hook'
-import { setLoginStatus } from '../redux/slices/isLogin.slice'
+
 
 
 interface loginData{
@@ -13,7 +12,7 @@ interface loginData{
   password:string
 }
 
-const loginUser=async(values:loginData,navigate:any,setMsg:any,actions:any,dispatch:any)=>{
+export const loginUser=async(values:loginData,navigate:any,actions:any)=>{
 
   try{
     const login=await axios.post("http://localhost:3001/auth/signin",values,{
@@ -21,14 +20,14 @@ const loginUser=async(values:loginData,navigate:any,setMsg:any,actions:any,dispa
     })
   
     if(login.status==200){
-      dispatch(setLoginStatus(true))
+  
       navigate('/user')
     }
 
   }catch(e:any){
     if(e.response.status==401){
       actions.resetForm()
-      setMsg(true)
+      
       console.log('PASSWORD INCCORECT')
 
     }
@@ -39,8 +38,8 @@ const loginUser=async(values:loginData,navigate:any,setMsg:any,actions:any,dispa
 
 
 export default function Login() {
-  const dispatch=useAppDispatch()
-  const [msg,setMsg]=useState()
+
+ 
   const navigate=useNavigate()
 
   return (
@@ -51,7 +50,7 @@ export default function Login() {
         password:''
       }}
       onSubmit={(values,actions)=>{
-        loginUser(values,navigate,setMsg,actions,dispatch)
+        loginUser(values,navigate,actions)
       }}
     
       >
@@ -71,7 +70,7 @@ export default function Login() {
         </Form>
       </Formik>
 
-    <h4>{msg?"Pleas provide correct credentials":null}</h4>
+   
     </div>
   )
 }

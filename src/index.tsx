@@ -11,15 +11,15 @@ import {
 import Root from './routs/Root';
 import CreateAccount from './routs/CreateAccount';
 
-import { Provider } from 'react-redux'
-import Login from './routs/Login';
+
+import Login, { loginUser } from './routs/Login';
 import UserPanel from './routs/UserPanel';
 import axios from 'axios';
 import mainUserData from './axios/mainUserData';
 import Logout from './routs/Logout';
 import LogoutHandler from './axios/logout';
 import rootLoader from './axios/rootLoader';
-import { store } from './redux/store';
+
 import Home from './routs/Home';
 
 
@@ -29,7 +29,15 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root/>,
-    loader:rootLoader,
+    loader:async({request})=>{
+      const url = new URL(request.url);
+      
+      console.log(url,'what it is')
+     return  rootLoader()
+    
+     
+    },
+   
     children:[
       {
         path:'/',
@@ -41,11 +49,12 @@ const router = createBrowserRouter([
       },
       {
         path:'login',
-        element:<Login/>
+        element:<Login/>,
+        
       },{
         path:'user',
         element:<UserPanel/>,
-        loader:mainUserData
+        
       
       },
       {
@@ -63,9 +72,9 @@ const root = ReactDOM.createRoot(
 root.render(
 
   
-    <Provider store={store}>
+ 
        <RouterProvider router={router} />
-       </Provider>
+    
  
  
 );

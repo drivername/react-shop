@@ -4,10 +4,7 @@ import { useField } from 'formik';
 // Create the EmailInput component with forwardRef
 const EmailInput = forwardRef(({ label, ...props }:any, ref:any) => {
   const [field, meta] = useField(props);
-    useEffect(()=>{
-    
-        
-    })
+ 
   return (
     <>
       <label htmlFor={props.id || props.name}>{label}</label>
