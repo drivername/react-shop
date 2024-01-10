@@ -1,12 +1,12 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Formik, Form, Field, ErrorMessage, useFormik } from 'formik';
 import * as Yup from 'yup';
-import '../styles/CreateAccount.scss'
+import s from '../styles/CreateAccount.module.scss'
 import TextInput from '../Forms/TextInput';
 import EmailInput from '../Forms/EmailInput';
 import PasswordInput from '../Forms/PasswordInput';
-import axios from 'axios';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useFormikContext } from 'formik';
+import { Link, redirect, useActionData, useNavigate, useSubmit } from 'react-router-dom';
 
 
 interface CreatedUser{
@@ -18,41 +18,20 @@ interface CreatedUser{
 
 
 
-  const handlePost=async(values:any,navigate:any,emailConstraint:any)=>{
-
-    try{
-        const response=await axios.post('http://localhost:3001/auth/signup',values,{
-            withCredentials:true
-        })
-        const response2=response.data
-        console.log(response,"co to takiego?")
-        if(response2.accountCreated==true){
-            navigate('/',{state:{message:"Your account was created, now you can sign in"}})
-        }
-     
-    }catch(e:any){
-        console.log(e,"gdzie to mam miejsce")
-        if(e.response.status==409){
-            console.log('wykonalo sie?')
-            emailConstraint.current!.value=''
-            emailConstraint.current!.placeholder='Accpunt with this email exist'
-            emailConstraint.current!.style.backgroundColor="red"
-            setTimeout(()=>{
-                emailConstraint.current!.style.backgroundColor="white"
-                emailConstraint.current!.placeholder='Write another email'
-            },2000)
-            
-        }
-    }
- } 
+ 
 
 export default function CreateAccount() {
+  let actionData:any=useActionData()
+  if(actionData===undefined)actionData={msg:'Not data yet',status:422}
    const navigate=useNavigate()
-    const emailConstraint=useRef<HTMLInputElement|null>(null)
+   const submit=useSubmit()
+
    
+
       return (
+       <div className={s.container}>
         <Formik
-        initialValues={{ firstName: '', lastName: '', email: '',password:'',repeatPassword:'' }}
+        initialValues={{ firstName: '', lastName: '', email: '',password:'',confirmPassword:'' }}
         validationSchema={Yup.object({
           firstName: Yup.string()
             .max(15, 'Must be 15 characters or less')
@@ -61,51 +40,35 @@ export default function CreateAccount() {
             .max(20, 'Must be 20 characters or less')
             .required('Required'),
           email: Yup.string().email('Invalid email address').required('Required'),
+          password: Yup.string()
+          .required('Password is required')
+          .min(3, 'Password must be at least 8 characters'),
+        confirmPassword: Yup.string()
+          .required('Please confirm your password')
+          .oneOf([Yup.ref('password')], 'Passwords must match')
         })}
-        onSubmit={(values, { setSubmitting }) => {
-            
-           handlePost(values,navigate,emailConstraint)
-      
-            
-           
-        
+        onSubmit={(values,actions) => {
+            actions.resetForm()
+            submit(values,{method:'post',action:'/create-account'})
         }}
       >
-         <Form>
-            <TextInput
-            label='Your name'
-            name='firstName'
-            type='text'
-            placeholder='Write your name'
-             />
-               <TextInput
-            label='Your second name'
-            name='lastName'
-            type='text'
-            placeholder='Write your name'
-             />
-             <EmailInput
-             label='Email'
-             name='email'
-             type='email'
-             placeholder='write your email'
-             ref={emailConstraint}
-            
-             />
-             <PasswordInput
-             label="Password"
-             name='password'
-             type='password'
-             />
-               <PasswordInput
-             label="Repeat Password"
-             name='repeatPassword'
-             type='password'
-             />
-               <button type="submit">Submit</button>
-        </Form>
+        {({values,handleChange})=>{
+          return (
+            <Form>
+             <TextInput label='Write your name' name='firstName'/>
+             <TextInput label='Write your second name' name='lastName'/>
+             <EmailInput label='Write your email' name='email'/>
+             <PasswordInput label='Provide your password' name='password'/>
+             <PasswordInput label='Repeat your password' name='confirmPassword'/>
+
+             <button type='submit'>Submit</button>
+           </Form>
+          )
+        }}
          
         </Formik>
-        
+        <Link to={'/'}><h3 className='info_about_created'>{actionData.status===201?`Account created, you can login or navigate to main page`:null}</h3></Link>
+               </div>
+       
       );
     };

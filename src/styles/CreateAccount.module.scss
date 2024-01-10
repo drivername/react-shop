@@ -1,0 +1,21 @@
+.container{
+    width:100%;
+
+    form{
+    
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        input{
+            width:50%;
+        }
+       
+    }
+    .info_about_created{
+        color:blue;
+        text-align: center;
+        margin-top:10%;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+       }
+}

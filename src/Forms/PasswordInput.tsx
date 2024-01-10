@@ -6,7 +6,7 @@ export default function PasswordInput({label,...props}:any) {
   return (
     <>
     <label htmlFor={props.id||props.name}>{label}</label>
-    <input className='password_input' {...field} {...props} />
+    <input type='password' className='password_input' {...field} {...props} />
     {meta.error&&meta.touched? (<div>{meta.error}</div>):null}
     </>
   )

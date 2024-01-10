@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export default async function LogoutHandler(){
-   
+export default async function logout(){
+  
     try{
-        const logout=await axios.post('http://localhost:3001/auth/logout',null,{
+        const logout=await axios.get('http://localhost:3001/auth/logout',{
             withCredentials:true
         })
       console.log(logout)
@@ -12,7 +12,7 @@ export default async function LogoutHandler(){
     catch(e){
        //It will invoke when  already are logout
        
-        return null
+        return e
        
     }
 

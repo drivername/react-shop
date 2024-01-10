@@ -1,16 +1,16 @@
 import axios from "axios";
 
 export default async function rootLoader(){
-   console.log('kiedy sie to wykonuje')
+ 
  try{
-    const checkIfUserIsloged=await axios.get('http://localhost:3001/user/panel',{
+    const checkIfUserIsloged=await axios.get('http://localhost:3001/auth/checkIFuserIsLoged',{
         withCredentials:true
     })
-  
-    return checkIfUserIsloged.data
+   
+    return {msg:'ok',status:200}
  }catch(e){
-    
-    return null
+   
+    return {msg:'Unauthorize',status:404}
  }
 
 }

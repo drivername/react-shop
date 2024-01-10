@@ -1,83 +1,62 @@
-import React from 'react';
+
 import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-import reportWebVitals from './reportWebVitals';
 import {
   createBrowserRouter,
+
+  createRoutesFromElements,
+
+  Route,
+
   RouterProvider,
+  useLoaderData,
 } from "react-router-dom";
 import Root from './routs/Root';
 import CreateAccount from './routs/CreateAccount';
+import './index.scss'
 
 
-import Login, { loginUser } from './routs/Login';
-import UserPanel from './routs/UserPanel';
-import axios from 'axios';
-import mainUserData from './axios/mainUserData';
+import UserPanel from './routs/userAccount/UserPanel';
+import mainUserData from './axios/userData/mainUserData';
 import Logout from './routs/Logout';
-import LogoutHandler from './axios/logout';
-import rootLoader from './axios/rootLoader';
+import login from './axios/login';
+import { Provider } from 'react-redux';
+import Login from './routs/Login';
+import ErrorPage from './routs/ErrorPage';
+import createAccount from './axios/createAccount';
+import logout from './axios/logout';
+import { store } from './redux/store';
+import MyProducts from './routs/userAccount/MyProducts';
+import MyProduct from './axios/userData/MyProducts';
 
-import Home from './routs/Home';
 
 
+const router=createBrowserRouter(
+  createRoutesFromElements(
+    <Route path='/' element={<Root/>} errorElement={<ErrorPage/>}>
+      <Route path='login' element={<Login/>} action={login}/>
 
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root/>,
-    loader:async({request})=>{
-      const url = new URL(request.url);
-      
-      console.log(url,'what it is')
-     return  rootLoader()
-    
-     
-    },
-   
-    children:[
-      {
-        path:'/',
-        element:<Home/>, 
-      },
-      {
-        path:'create-account',
-        element:<CreateAccount/>, 
-      },
-      {
-        path:'login',
-        element:<Login/>,
-        
-      },{
-        path:'user',
-        element:<UserPanel/>,
-        
-      
-      },
-      {
-        path:'logout',
-        element:<Logout/>,
-        loader:LogoutHandler
-      }
-    ]
-  },
-]);
+      <Route path='user' element={<UserPanel/>} loader={mainUserData}/>
+      <Route index path='user/myProducts' element={<MyProducts/>} loader={MyProduct}/>
+
+      <Route path='create-account' element={<CreateAccount/>} action={createAccount}/>
+      <Route path='logout' element={<Logout/>} loader={logout}/>
+
+    </Route>
+  )
+)
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-
-  
- 
-       <RouterProvider router={router} />
-    
- 
- 
+  <Provider store={store}>
+<RouterProvider router={router}/>
+</Provider>
 );
 
 
-reportWebVitals();
+

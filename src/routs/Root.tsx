@@ -1,33 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import '../styles/Root.scss'
+import s from '../styles/Root.module.scss'
 import Nav from '../components/Nav'
-import { Outlet, useLoaderData, useLocation } from 'react-router-dom'
+import { BrowserRouter, Link, Outlet, Route, RouterProvider, Routes, createBrowserRouter, createRoutesFromElements, useLoaderData, useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 
-function Root() {
 
-const data:any=useLoaderData()
-let isLoged=false
 
-console.log(data,'data')
-if(data!==null){
-isLoged=true
-}
 
-  return (
-    <div className='mainContainer'> 
-    <nav className='nav'>
-    <Nav isLoged={isLoged}></Nav>
-    </nav>
-    <main className='main'>
- <Outlet/>
+function Root(props:any) {
+
+return (
+
+<div className={s.container}>
+  <nav className={s.nav}>
+  <Nav/>
+
+  </nav>
+  <main className={s.main}>
+    <Outlet/>
+  </main>
+
+</div>
+
+
+)
  
-    </main>
-    <footer></footer>
-    </div>
-  )
+
+
+
+
+
+ 
 }
 
 

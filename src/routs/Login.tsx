@@ -1,9 +1,9 @@
-import { Form, Formik, replace, useFormik } from 'formik'
-import React, { useState } from 'react'
-import TextInput from '../Forms/TextInput'
-import PasswordInput from '../Forms/PasswordInput'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import {  Form,Formik, replace, useField, useFormik } from 'formik'
+import React, { useEffect, useRef, useState } from 'react'
+import { Link, useActionData, useLoaderData, useNavigate, useNavigation, useSubmit } from 'react-router-dom'
+import { useAppDispatch } from '../redux/hook'
+import { setUserLoginStatus } from '../redux/slices/isLoginSlice'
+
 
 
 
@@ -12,35 +12,35 @@ interface loginData{
   password:string
 }
 
-export const loginUser=async(values:loginData,navigate:any,actions:any)=>{
 
-  try{
-    const login=await axios.post("http://localhost:3001/auth/signin",values,{
-      withCredentials:true
-    })
-  
-    if(login.status==200){
-  
-      navigate('/user')
-    }
-
-  }catch(e:any){
-    if(e.response.status==401){
-      actions.resetForm()
-      
-      console.log('PASSWORD INCCORECT')
-
-    }
-  }
- 
- 
-}
 
 
 export default function Login() {
+ 
+let actionData:any=useActionData() 
+if(actionData===undefined){actionData={msg:'No data yet',status:422}}
+console.log(actionData,'actionData')
+
+const submit=useSubmit()
+ const emailRef=useRef<HTMLInputElement|null>(null)
+ const passRef=useRef<HTMLInputElement|null>(null)
+ const navigate=useNavigate()
+//By this i can take information in what state my action is
+ const navigation=useNavigation()
+ const dispatch=useAppDispatch()
+
+useEffect(()=>{
+
+  if(actionData.status==200){
+    dispatch(setUserLoginStatus(true))
+    navigate('/user')
+  }
+
+
+},[actionData])
 
  
-  const navigate=useNavigate()
+
 
   return (
     <div>
@@ -50,27 +50,52 @@ export default function Login() {
         password:''
       }}
       onSubmit={(values,actions)=>{
-        loginUser(values,navigate,actions)
+     
+        
+       submit(values,{method:'post',action:'login'})
+      
       }}
     
       >
-        <Form>
-        <TextInput
-         label='Your Email'
+ {({values,handleChange})=>{
+  return (
+    <Form >
+    <div>
+      <label htmlFor='email'>Write yout email!</label>
+      <input
+       type='text'
+        id='email'
          name='email'
-         type='text'
-         placeholder='Write your name'
-        />
-        <PasswordInput
-        label="Password"
-        name='password'
-        type='password'
-        />
-<button type='submit'>Login</button>
-        </Form>
+          className='email_input'
+           ref={emailRef}
+           onChange={handleChange}
+           value={values.email}
+      />
+    </div>
+    <div>
+      <label htmlFor='password'>Write yout email!</label>
+      <input
+       type='password'
+        id='password'
+         name='password'
+          className='password'
+           ref={passRef}
+           onChange={handleChange}
+           value={values.password}
+           />
+
+    </div>
+<button type='submit' disabled={navigation.state==='submitting'?true:false}>
+  {navigation.state==='submitting'?'Loading':'Login'}
+</button>
+    </Form>
+  )
+
+ }}
       </Formik>
 
    
     </div>
   )
 }
+

@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react'
-import { useLoaderData, useNavigate } from 'react-router-dom'
+import { redirect, useLoaderData, useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../redux/hook'
+import { setUserLoginStatus } from '../redux/slices/isLoginSlice'
 
 
 export default function Logout() {
     const navigate=useNavigate()
     const data:any=useLoaderData()
+    const dispatch=useAppDispatch()
+useEffect(()=>{
+  if(data.status==200){
+    dispatch(setUserLoginStatus(false))
+    navigate('/')
+  }
+  navigate('/')
+},[])
+ 
 
-console.log(data,'WYKONAL SIE LOGOUT')
-    useEffect(()=>{
-      
-      if(data==null){
-        console.log('wykonuje się?')
-          return navigate('/')
-      }
-
-      if(data.data.msg==='refresh-toke-delete'){
-         
-             return navigate('/')
-        }
+ 
        
-    })
+ 
   return (
     <div>Logout</div>
   )
