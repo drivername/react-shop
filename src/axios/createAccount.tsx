@@ -14,7 +14,7 @@ export default async function createAccount({request}:any){
         }
     }
     catch(e){
-        return 'cos'
+        throw {msg:'something-went-wrong',status:403}
     }
 
 }

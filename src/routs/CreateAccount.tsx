@@ -9,11 +9,6 @@ import { useFormikContext } from 'formik';
 import { Link, redirect, useActionData, useNavigate, useSubmit } from 'react-router-dom';
 
 
-interface CreatedUser{
-    accountCreated:boolean
-    jwtExp:number
-    
-}
 
 
 
@@ -48,6 +43,7 @@ export default function CreateAccount() {
           .oneOf([Yup.ref('password')], 'Passwords must match')
         })}
         onSubmit={(values,actions) => {
+         
             actions.resetForm()
             submit(values,{method:'post',action:'/create-account'})
         }}

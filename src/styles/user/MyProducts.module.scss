@@ -1,3 +1,44 @@
 .container{
-    
+
+    .main{
+       
+        min-height:70vh;
+        width:90%;
+    height:90%;
+    margin-left:7%;
+
+    h3{
+    text-align: center;}
+ 
+       
+       tr{
+        
+       
+       
+        th{
+            padding:10px;
+            width:20%;
+            border:1px solid black;
+            text-align: center;
+            -webkit-text-stroke:1px green;
+            font-weight:bold;
+            
+        }
+        td{
+            
+            padding:5px;
+            text-align: center;
+            border:1px solid black;
+        }
+       
+       }
+       .emptyCell{
+        border:none;
+        width:7%;
+    }
+    .orderOfItem{
+        
+        
+    }
+    }
 }

@@ -27,9 +27,10 @@ export default function Nav() {
    
      
     if(data.status===200){
-    
+
       setData(data.data)
       dispatch(setUserLoginStatus(true))
+    
      
     }
 
@@ -37,7 +38,8 @@ export default function Nav() {
 
     }
    }
-   checkIfUserIsloged(setData)
+checkIfUserIsloged(setData)
+  
   
 
  },[isLoged])

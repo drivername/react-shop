@@ -1,0 +1,58 @@
+@mixin setting{
+    border:1px solid blue;
+    display: flex;
+    height:5vh;
+    p{
+       width:80%;   
+        height:100%;
+        background-color:beige;
+        font-size:1.3rem;
+      
+        
+    }
+    button{
+        width:20%;
+        height:100%;
+    }
+    input{
+        width:80%;
+        text-align: center;
+    }
+}
+.container{
+    font-size:16px;
+    width:100%;
+    height:60vh;
+    border:5px solid black;
+    .userBox{
+        text-align: center;
+        width:30%;
+        height:fit-content;
+        border:4px solid blue;
+       .firstName{
+      
+      @include setting;
+       }
+       .lastName{
+        @include setting;
+       }
+       .email{
+        @include setting;
+       }
+       .amount_of_money{
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        border:1px solid blue;
+        display: flex;
+        height:5vh;
+        background-color: beige;
+        text-align: center;
+        font-size: 1.3em;
+        -webkit-text-stroke:1px darkgreen;
+       }
+       .password{
+        @include setting;
+       }
+    }
+}
