@@ -3,11 +3,22 @@ import { RootState } from "../store"
 
 interface isLoginState {
     value: boolean
+    refreshValue:number,
+    id:number,
+    firstName:string,
+    lastName:string,
+    email:string
   }
   
   // Define the initial state using that type
   const initialState: isLoginState = {
     value: false,
+    refreshValue:0,
+    id:0,
+    firstName:'',
+    lastName:'',
+    email:''
+
   }
   
   export const isLoginSlice = createSlice({
@@ -16,14 +27,23 @@ interface isLoginState {
     initialState,
     reducers: {
         setUserLoginStatus(state,action){
-            console.log(action.payload,'what is set')
             state.value=action.payload
+        },
+        refreshNav(state,action){
+          state.refreshValue++
+        },
+        saveDataAboutUser(state,action){
+          
+          state.firstName=action.payload.firstName
+          state.lastName=action.payload.lastName
+          state.email=action.payload.email
+          state.id=action.payload.id
         }
     
     },
   })
   
-  export const { setUserLoginStatus } = isLoginSlice.actions
+  export const { setUserLoginStatus, refreshNav, saveDataAboutUser } = isLoginSlice.actions
   
   // Other code such as selectors can use the imported `RootState` type
   export const selectCount = (state: RootState) => state.isLogin.value

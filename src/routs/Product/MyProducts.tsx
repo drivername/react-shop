@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLoaderData } from 'react-router-dom'
 import s from '../../styles/user/MyProducts.module.scss'
 import productImg from '../../public/product.png'
+import makeGetRequest from '../../axios/common/makeGetRequest'
 type sortProductsType='price-descending'|'price-ascending'|'quantity-descending'|'quantity-ascending'|'default'
 
 function MyProducts() {
@@ -22,6 +23,7 @@ console.log(loaderData,'loaderData')
           <th>Name of item</th>
           <th>Price</th>
           <th>Owned Quantity</th>
+          <th>Comments</th>
         </tr>
        
           {loaderData.map((el: any,i: any,arr: any)=>{
@@ -45,9 +47,10 @@ console.log(loaderData,'loaderData')
               return (
                 <tr>
                 <td>{i+1}</td>
-                <td><Link to={`/user/details/${arr[i].id}`}>{arr[i].name_of_product}</Link></td>
+                <td><Link to={`/product/details/${arr[i].id}`}>{arr[i].name_of_product}</Link></td>
                 <td>{arr[i].price}</td>
                 <td>{arr[i].quantity}</td>
+                <td>{arr[i].commentaboutproduct.length}</td>
                 </tr>
               )
             
@@ -73,6 +76,11 @@ console.log(loaderData,'loaderData')
 
     </div>
   )
+}
+
+export async function loader({params}:any){
+  console.log(params)
+  return await makeGetRequest('http://localhost:3001/product/myProducts')
 }
 
 export default MyProducts

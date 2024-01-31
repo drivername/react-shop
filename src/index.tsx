@@ -12,7 +12,7 @@ import {
   useLoaderData,
 } from "react-router-dom";
 import Root from './routs/Root';
-import CreateAccount from './routs/CreateAccount';
+import CreateAccount ,{action as actionCreate} from './routs/CreateAccount';
 import './index.scss'
 
 
@@ -23,19 +23,23 @@ import Logout from './routs/Logout';
 import { Provider } from 'react-redux';
 import Login, { action as actionLogin } from './routs/Login';
 import ErrorPage from './routs/ErrorPage';
-import createAccount from './axios/createAccount';
+
 import logout from './axios/logout';
 import { store } from './redux/store';
-import MyProducts from './routs/userAccount/MyProducts';
-import MyProduct from './axios/userData/MyProducts';
-import SellProducts from './routs/userAccount/SellProducts';
-import putProductsOnMarket from './axios/userData/putProductsOnMarket';
+import MyProducts, { loader as loaderMyProducts } from './routs/Product/MyProducts';
+
+import SellProducts, { action as actionSellProduct } from './routs/Product/SellProducts';
+
 import Home, { action as actionHome, loader as loaderHome } from './routs/Home';
 
-import homeLoader from './axios/homeLoader';
-import ProductDetails, { action as actionProductDetails } from './routs/userAccount/ProductDetails';
-import UserProfile, { loader as loaderProfile } from './routs/userAccount/UserProfile';
 
+import ProductDetails, { action as actionProductDetails, loader as loaderProductDetails } from './routs/Product/ProductDetails';
+import UserProfile, { loader as loaderProfile } from './routs/userAccount/UserProfile';
+import Settings, { action as actionSettings, loader as loaderSettings } from './routs/userAccount/Settings';
+import ParticularProduct, { action as actionParticularProduct, loader as loaderParticularProduct } from './routs/ParticularProduct';
+import Upload, { action as actionUpload, loader as loaderUpload } from './routs/Upload';
+import Chat from './routs/Chat';
+import ProfileOfOtherUser, { loader as loaderOtherUser } from './routs/userAccount/ProfileOfOtherUser';
 
 
 const router=createBrowserRouter(
@@ -43,19 +47,29 @@ const router=createBrowserRouter(
     <Route path='/' element={<Root/>} errorElement={<ErrorPage/>}>
 
       <Route  path='/' element={<Home/>} loader={loaderHome}  action={actionHome}/>
+     
+      <Route  path='/chat' element={<Chat/>} />
+      <Route  path='/upload' element={<Upload/>} loader={loaderUpload}  action={actionUpload}/>
       <Route path='login' element={<Login/>} action={actionLogin}/>
+      <Route path='/details/:productId' element={<ParticularProduct/>} 
+      loader={loaderParticularProduct}
+      action={actionParticularProduct
+      }
+      />
 
-
+<Route  path='/myProducts' element={<MyProducts/>} loader={loaderMyProducts}/>
+<Route  path='product/details/:id' element={<ProductDetails/>} loader={loaderProductDetails} action={actionProductDetails}/>
+<Route  path='/product/sell' element={<SellProducts/>} action={actionSellProduct} />
       <Route path='user' element={<UserPanel/>} >
-      <Route  path='myProducts' element={<MyProducts/>} loader={MyProduct}/>
+     
       <Route index  path='/user' element={<UserProfile/>} loader={loaderProfile}/>
-      <Route  path='sell' element={<SellProducts/>} action={putProductsOnMarket} />
-      <Route  path='details/:id' element={<ProductDetails/>} loader={MyProduct} action={actionProductDetails}/>
+      <Route  path='settings' element={<Settings/>} loader={loaderSettings} action={actionSettings}/>
+      <Route  path='/user/:id' element={<ProfileOfOtherUser/>} loader={loaderOtherUser} />
       </Route>
      
       
 
-      <Route path='create-account' element={<CreateAccount/>} action={createAccount}/>
+      <Route path='create-account' element={<CreateAccount/>} action={actionCreate}/>
       <Route path='logout' element={<Logout/>} loader={logout}/>
 
     </Route>

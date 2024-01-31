@@ -21,7 +21,7 @@ return (
   <main className={s.main}>
     <Outlet/>
   </main>
-
+<footer className={s.footer}></footer>
 </div>
 
 

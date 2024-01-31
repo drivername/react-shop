@@ -5,9 +5,10 @@ export default async function makePostRequest(path:string,dto:any){
  
     try{
         const response=await axios.post(path,dto,{
-            withCredentials:true
+            withCredentials:true,
+        
         })
-       console.log(response,'response')
+            console.log(response)
         return response.data
     }catch(e:any){
         console.log(e,'co siedzieje')

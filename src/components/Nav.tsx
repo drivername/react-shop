@@ -3,7 +3,7 @@ import  s from'../styles/Nav.module.scss'
 import { Link, NavLink, useLoaderData } from 'react-router-dom'
 import axios from 'axios'
 import { useAppDispatch, useAppSelector } from '../redux/hook'
-import { setUserLoginStatus } from '../redux/slices/isLoginSlice'
+import { saveDataAboutUser, setUserLoginStatus } from '../redux/slices/isLoginSlice'
 import { UnknownAction } from 'redux'
 import UserNav from './UserNav'
 
@@ -17,6 +17,8 @@ export default function Nav() {
   const [data,setData]=useState<any>(false)
   const dispatch=useAppDispatch()
   const isLoged=useAppSelector((state)=>state.isLogin.value)
+  const refresh=useAppSelector((state)=>state.isLogin.refreshValue)
+  const userData=useAppSelector((state)=>state.isLogin)
  
  useEffect(()=>{
   async function checkIfUserIsloged(setData:any){
@@ -24,15 +26,16 @@ export default function Nav() {
      const data=await axios.get('http://localhost:3001/auth/checkIFuserIsLoged',{
        withCredentials:true
      })
-   
-     
-    if(data.status===200){
-
+  
+     if(data.status===200){
       setData(data.data)
       dispatch(setUserLoginStatus(true))
+      dispatch(saveDataAboutUser({firstName:data.data.firstName,lastName:data.data.lastName,email:data.data.email,id:data.data.id}))
+     }
+      
     
      
-    }
+    
 
     }catch(e){
 
@@ -42,7 +45,7 @@ checkIfUserIsloged(setData)
   
   
 
- },[isLoged])
+ },[isLoged,refresh,userData])
  
 
 

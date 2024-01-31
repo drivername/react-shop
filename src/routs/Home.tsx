@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useActionData, useLoaderData, useNavigate, useSubmit } from 'react-router-dom'
+import { Link, useActionData, useLoaderData, useNavigate, useSubmit } from 'react-router-dom'
 import s from '../styles/Home.module.scss'
 import productImg from '../public/product.png'
 import { Form,Field, Formik, useFormik } from 'formik'
@@ -15,13 +15,13 @@ function Home() {
   let homeAction:any=useActionData()
   if(homeAction===undefined)homeAction=homeLoader
 
-  
+console.log(homeLoader[0].img_url,'what it is?')
 
 
   
   
   const submit=useSubmit()
-  console.log(homeAction,'action')
+  
   return (
     <div className={s.container}>
         <h1>Welcome on our store page!</h1>
@@ -62,13 +62,14 @@ function Home() {
         </nav>
         <div className={s.itemsDisplay}>
         {homeAction.map((e: any,i: any,arr: any)=>{
+          console.log(e.img_url,"img?")
             return (
             <div key={e.name_of_product} className={s.boxItem}>
               <p className={s.name_of_product}>{e.name_of_product}</p>
-              <img src={productImg} className={s.img}/>
+              <img src={e.img_url} className={s.img} alt={e.img_url}/>
               <p className={s.price}>Now only: {e.price}</p>
               <p className={s.description}>{e.description}</p>
-              <button className={s.btn}>Buy</button>
+              <button className={s.btn}><Link to={`/details/${arr[i].id}`}>Check</Link></button>
             </div>
             )
           })}
