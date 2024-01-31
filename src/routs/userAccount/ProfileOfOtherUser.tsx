@@ -1,9 +1,14 @@
 import React from 'react'
 import s from '../../styles/user/ProfileOfOtherUser.module.scss'
 import makeGetRequest from '../../axios/common/makeGetRequest'
+import User from '../../components/User'
+import { useLoaderData } from 'react-router-dom'
 function ProfileOfOtherUser() {
+  const dataLoader=useLoaderData()
   return (
-    <div>ProfileOfOtherUser</div>
+    <div>
+      <User dataUser={dataLoader}/>
+    </div>
   )
 }
 

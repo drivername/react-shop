@@ -16,7 +16,7 @@ import CreateAccount ,{action as actionCreate} from './routs/CreateAccount';
 import './index.scss'
 
 
-import UserPanel, { loader as loaderUser } from './routs/userAccount/UserPanel';
+import UserPanel from './routs/userAccount/UserPanel';
 
 import Logout from './routs/Logout';
 
@@ -40,6 +40,7 @@ import ParticularProduct, { action as actionParticularProduct, loader as loaderP
 import Upload, { action as actionUpload, loader as loaderUpload } from './routs/Upload';
 import Chat from './routs/Chat';
 import ProfileOfOtherUser, { loader as loaderOtherUser } from './routs/userAccount/ProfileOfOtherUser';
+import WriteMessage from './routs/message/WriteMessage';
 
 
 const router=createBrowserRouter(
@@ -64,11 +65,12 @@ const router=createBrowserRouter(
      
       <Route index  path='/user' element={<UserProfile/>} loader={loaderProfile}/>
       <Route  path='settings' element={<Settings/>} loader={loaderSettings} action={actionSettings}/>
-      <Route  path='/user/:id' element={<ProfileOfOtherUser/>} loader={loaderOtherUser} />
+      <Route  path='particular/:id' element={<ProfileOfOtherUser/>} loader={loaderOtherUser} />
       </Route>
      
       
 
+      <Route path='writeMessage' element={<WriteMessage/>}/>
       <Route path='create-account' element={<CreateAccount/>} action={actionCreate}/>
       <Route path='logout' element={<Logout/>} loader={logout}/>
 

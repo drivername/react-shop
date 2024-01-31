@@ -4,6 +4,7 @@ import makeGetRequest from '../../axios/common/makeGetRequest'
 import { useLoaderData } from 'react-router-dom'
 import s from '../../styles/user/UserProfile.module.scss'
 import { useReducer } from 'react';
+import User from '../../components/User'
 
 
 
@@ -13,17 +14,15 @@ import { useReducer } from 'react';
 function UserProfile() {
   
     const dataLoader:any=useLoaderData()
-    const [input,setInput]=useState({
-        firstName:dataLoader.firstName,
-        lastName:dataLoader.lastName,
-        email:dataLoader.email,
-        password:''
-    })
+ 
   
-    console.log(input)
+    console.log(dataLoader)
   return (
     <div className={s.container}>
-        
+        <div>
+          <User dataUser={dataLoader}/>
+          
+        </div>
      
     </div>
   )

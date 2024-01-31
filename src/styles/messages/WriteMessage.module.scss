@@ -1,0 +1,64 @@
+.container{
+    width:100%;
+    height:80vh;
+    background-color: skyblue;
+    .messageBox{
+        width:60%;
+        height:90%;
+        border:5px groove black;
+        display: flex;
+        flex-direction: column;
+        position:relative;
+form{
+    width:100%;
+    height:100%;
+}
+        .inputPakRecepient{
+            width:100%;
+         
+            display: flex;
+            .p{
+                width:15%;
+                text-align: center;
+                font-weight:bold;
+                background-color: silver;
+                border-bottom:2px groove silver;
+            }
+            .input{
+                width:85%;
+            }
+    
+          }
+
+      .inputPakTopic{
+        width:100%;
+     
+        display: flex;
+        .p{
+            width:15%;
+            text-align: center;
+            font-weight:bold;
+            background-color: silver;
+        }
+        .input{
+            width:85%;
+        }
+
+      }
+      
+        .textarea{
+            position: absolute;
+            margin-top:5px;
+            height:40%;
+            width:100%;
+            bottom:5%;
+        }
+        .btnSend{
+            position: absolute;
+            bottom:0;
+            width:100%;
+            font-weight: bold;
+            background-color: silver;
+        }
+    }
+}

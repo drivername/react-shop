@@ -31,21 +31,7 @@ export default function CreateAccount() {
        <div className={s.container}>
         <Formik
         initialValues={{ firstName: '', lastName: '', email: '',password:'',confirmPassword:'', }}
-        validationSchema={Yup.object({
-          firstName: Yup.string()
-            .max(15, 'Must be 15 characters or less')
-            .required('Required'),
-          lastName: Yup.string()
-            .max(20, 'Must be 20 characters or less')
-            .required('Required'),
-          email: Yup.string().email('Invalid email address').required('Required'),
-          password: Yup.string()
-          .required('Password is required')
-          .min(3, 'Password must be at least 8 characters'),
-        confirmPassword: Yup.string()
-          .required('Please confirm your password')
-          .oneOf([Yup.ref('password')], 'Passwords must match')
-        })}
+       
         onSubmit={(values,actions) => {
             
             actions.resetForm()
@@ -83,10 +69,25 @@ export default function CreateAccount() {
       const formData=await request.formData()
       const dto=Object.fromEntries(formData)
       console.log(dto)
-      
+    
+    
+    try{
 
-      return true
-// return await makePostRequest('http://localhost:3001/auth/signup',dto)
+        const create=await axios.post('http://localhost:3001/auth/signup',dto,{
+            withCredentials:true,
+            headers:{
+              'Content-Type':'multipart/form-data'
+            }
+        })
+        if(create.data.accountCreated===true){
+            return {msg:'Account create successful',status:201}
+        }
+    }
+    catch(e){
+        console.log(e)
+        throw {msg:'something-went-wrong',status:403}
+    }
+
 
       
     }

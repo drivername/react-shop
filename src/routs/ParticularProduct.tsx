@@ -22,7 +22,7 @@ function ParticularProduct() {
   return (
     <div className={s.container}>
         <div className={s.ownerInfo}>
-            <p>Who sell:<Link to={`/user/${userData.id}`}>{userData.firstName}</Link></p>
+            <p>Who sell:<Link to={`/user/particular/${userData.id}`}>{userData.firstName}</Link></p>
         </div>
        
        <CommentsProduct

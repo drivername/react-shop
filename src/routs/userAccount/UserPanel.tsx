@@ -9,8 +9,7 @@ import makeGetRequest from '../../axios/common/makeGetRequest'
 
 
 export default function UserPanel() {
-  const navigate=useNavigate()
- let dataUser:any=useLoaderData()
+
 
  
 
@@ -23,6 +22,3 @@ export default function UserPanel() {
   )
 }
 
-export async function loader(){
-  return await makeGetRequest('http://localhost:3001/user/panel')
-}
