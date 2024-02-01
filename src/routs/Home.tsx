@@ -15,7 +15,7 @@ function Home() {
   let homeAction:any=useActionData()
   if(homeAction===undefined)homeAction=homeLoader
 
-console.log(homeLoader[0].img_url,'what it is?')
+
 
 
   
@@ -62,7 +62,7 @@ console.log(homeLoader[0].img_url,'what it is?')
         </nav>
         <div className={s.itemsDisplay}>
         {homeAction.map((e: any,i: any,arr: any)=>{
-          console.log(e.img_url,"img?")
+        
             return (
             <div key={e.name_of_product} className={s.boxItem}>
               <p className={s.name_of_product}>{e.name_of_product}</p>
